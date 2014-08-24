@@ -1,0 +1,7 @@
+{
+accelerometer:{},
+position:{},
+compass:{},
+device-data:{imei,platform, version, model-name},
+network-data:{operator,lac,cellid, currentsignalstrength,neighbors:{cellid,lac,signalstrength}}
+}
