@@ -1,4 +1,6 @@
 /Users/abbass/Projects/phoneagentbg/platforms/android/ant-build/classes.dex : \
+/Users/abbass/Projects/phoneagentbg/platforms/android/ant-build/classes/com/abbasdawood/cordova/signal/Signal$MyPhoneStateListener.class \
+/Users/abbass/Projects/phoneagentbg/platforms/android/ant-build/classes/com/abbasdawood/cordova/signal/Signal.class \
 /Users/abbass/Projects/phoneagentbg/platforms/android/ant-build/classes/com/listener/bgservice/BackgroundListener.class \
 /Users/abbass/Projects/phoneagentbg/platforms/android/ant-build/classes/com/listener/phoneagentbg/BuildConfig.class \
 /Users/abbass/Projects/phoneagentbg/platforms/android/ant-build/classes/com/listener/phoneagentbg/PhoneAgentBG.class \
@@ -27,4 +29,16 @@
 /Users/abbass/Projects/phoneagentbg/platforms/android/ant-build/classes/com/red_folder/phonegap/plugin/backgroundservice/BackgroundServicePluginLogic.class \
 /Users/abbass/Projects/phoneagentbg/platforms/android/ant-build/classes/com/red_folder/phonegap/plugin/backgroundservice/BootReceiver.class \
 /Users/abbass/Projects/phoneagentbg/platforms/android/ant-build/classes/com/red_folder/phonegap/plugin/backgroundservice/PropertyHelper.class \
+/Users/abbass/Projects/phoneagentbg/platforms/android/ant-build/classes/org/apache/cordova/batterystatus/BatteryListener$1.class \
+/Users/abbass/Projects/phoneagentbg/platforms/android/ant-build/classes/org/apache/cordova/batterystatus/BatteryListener.class \
+/Users/abbass/Projects/phoneagentbg/platforms/android/ant-build/classes/org/apache/cordova/device/Device.class \
+/Users/abbass/Projects/phoneagentbg/platforms/android/ant-build/classes/org/apache/cordova/devicemotion/AccelListener$1.class \
+/Users/abbass/Projects/phoneagentbg/platforms/android/ant-build/classes/org/apache/cordova/devicemotion/AccelListener.class \
+/Users/abbass/Projects/phoneagentbg/platforms/android/ant-build/classes/org/apache/cordova/geolocation/CordovaLocationListener$LocationTimeoutTask.class \
+/Users/abbass/Projects/phoneagentbg/platforms/android/ant-build/classes/org/apache/cordova/geolocation/CordovaLocationListener.class \
+/Users/abbass/Projects/phoneagentbg/platforms/android/ant-build/classes/org/apache/cordova/geolocation/GeoBroker.class \
+/Users/abbass/Projects/phoneagentbg/platforms/android/ant-build/classes/org/apache/cordova/geolocation/GPSListener.class \
+/Users/abbass/Projects/phoneagentbg/platforms/android/ant-build/classes/org/apache/cordova/geolocation/NetworkListener.class \
+/Users/abbass/Projects/phoneagentbg/platforms/android/ant-build/classes/org/apache/cordova/networkinformation/NetworkManager$1.class \
+/Users/abbass/Projects/phoneagentbg/platforms/android/ant-build/classes/org/apache/cordova/networkinformation/NetworkManager.class \
 /Users/abbass/Projects/phoneagentbg/platforms/android/ant-build/dexedLibs/classes-2659b0475258984ab5679beaf31d6a97.jar \
