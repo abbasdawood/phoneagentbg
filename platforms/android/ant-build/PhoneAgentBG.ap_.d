@@ -649,7 +649,6 @@
 /Users/abbass/Projects/phoneagentbg/platforms/android/assets/www/plugins/com.red_folder.phonegap.plugin.backgroundservice \
 /Users/abbass/Projects/phoneagentbg/platforms/android/assets/www/plugins/org.apache.cordova.battery-status \
 /Users/abbass/Projects/phoneagentbg/platforms/android/assets/www/plugins/org.apache.cordova.device \
-/Users/abbass/Projects/phoneagentbg/platforms/android/assets/www/plugins/org.apache.cordova.device-motion \
 /Users/abbass/Projects/phoneagentbg/platforms/android/assets/www/plugins/org.apache.cordova.geolocation \
 /Users/abbass/Projects/phoneagentbg/platforms/android/assets/www/plugins/org.apache.cordova.network-information \
 /Users/abbass/Projects/phoneagentbg/platforms/android/assets/www/plugins/com.abbasdawood.cordova.signal/www \
@@ -660,9 +659,6 @@
 /Users/abbass/Projects/phoneagentbg/platforms/android/assets/www/plugins/org.apache.cordova.battery-status/www/battery.js \
 /Users/abbass/Projects/phoneagentbg/platforms/android/assets/www/plugins/org.apache.cordova.device/www \
 /Users/abbass/Projects/phoneagentbg/platforms/android/assets/www/plugins/org.apache.cordova.device/www/device.js \
-/Users/abbass/Projects/phoneagentbg/platforms/android/assets/www/plugins/org.apache.cordova.device-motion/www \
-/Users/abbass/Projects/phoneagentbg/platforms/android/assets/www/plugins/org.apache.cordova.device-motion/www/Acceleration.js \
-/Users/abbass/Projects/phoneagentbg/platforms/android/assets/www/plugins/org.apache.cordova.device-motion/www/accelerometer.js \
 /Users/abbass/Projects/phoneagentbg/platforms/android/assets/www/plugins/org.apache.cordova.geolocation/www \
 /Users/abbass/Projects/phoneagentbg/platforms/android/assets/www/plugins/org.apache.cordova.geolocation/www/Coordinates.js \
 /Users/abbass/Projects/phoneagentbg/platforms/android/assets/www/plugins/org.apache.cordova.geolocation/www/geolocation.js \

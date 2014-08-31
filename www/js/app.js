@@ -3,7 +3,6 @@ var app = {
     backgroundService: null,
     myFirebaseRef: null,
     location: {},
-    accelerometer: {},
     device: {},
     neighbors: {},
     advanced: {},
@@ -27,10 +26,8 @@ var app = {
         var factory = cordova.require('com.red_folder.phonegap.plugin.backgroundservice.BackgroundService');
         app.backgroundService = factory.create(serviceName);
         console.log('calling senddata');
-
         window.addEventListener('watchingnetwork', app.getNetworkInfo, false);
         window.addEventListener('batterystatus', app.getBatteryInfo, false);
-        navigator.accelerometer.getCurrentAcceleration(app.onAccSuccess, app.onError);
         app.checkConnection();
         app.getDeviceName();
         app.getLocationInfo();
@@ -65,7 +62,7 @@ var app = {
         if (data.TimerEnabled) {
             app.registerForUpdates(data);
         } else {
-            var frequency = app.location.speed > 0 ? 1200000 : 600000;
+            var frequency = app.location.speed > 0 ? 10000 : 60000;
             console.log("Frequency:" + frequency);
             app.backgroundService.enableTimer(frequency, app.registerForUpdates, app.displayError);
         }
@@ -88,9 +85,8 @@ var app = {
 
             console.log("Data incoming:" + JSON.stringify(data));
             //Commit it to the database
-            app.myFirebaseRef.push({
+            var pushed = app.myFirebaseRef.push({
                 "timestamp": data.LatestResult.Timestamp,
-                "accelerometer": app.accelerometer,
                 "neighbors": app.neighbors,
                 "network": app.network,
                 "battery": {
@@ -101,7 +97,8 @@ var app = {
                     "imei": app.advanced.imei,
                     "operator": app.advanced.operator,
                     "cellId": app.advanced.cellID,
-                    "lac": app.advanced.lac
+                    "lac": app.advanced.lac,
+                    "imsi": app.advanced.imsi
                 },
                 "device": app.device,
                 "location": {
@@ -115,6 +112,21 @@ var app = {
                 }
             });
 
+            console.log('Firebase returns:' + pushed.toString());
+
+            if (pushed != null) {
+                app.myFirebaseRef.on('child_added', function(snapshot) {
+                    var e = document.createElement('div');
+                    e.innerHTML = '<core-item icon="device:access-time" label="Pushed at ' + snapshot.timestamp + '"></core-item>';
+                    parent.appendChild(d);
+                    console.log("Child Added: " + e.toString());
+                });
+            } else {
+                var d = document.createElement('div');
+                d.innerHTML = '<core-item icon="error" label="Error pushing at ' + data.LatestResult.Timestamp + '"></core-item>';
+                parent.appendChild(d);
+                console.log("Child Added: " + d.toString());
+            }
 
         }
     },
@@ -147,11 +159,7 @@ var app = {
     getNetworkInfo: function(info) {
         app.advanced = info;
         app.neighbors = info.neighbors;
-    },
-
-    /*Accelerometer */
-    onAccSuccess: function(acceleration) {
-        app.accelerometer = acceleration;
+        console.log(info.toString());
     },
 
     /*Battery Info*/

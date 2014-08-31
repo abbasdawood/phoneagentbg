@@ -16,6 +16,7 @@ var Signal = function() {
     this.operator = null;
     this.cellID = null;
     this.lac = null;
+    this.imsi = null;
     this.neighbors = {};
     // Create new event handlers on the window (returns a channel instance)
     this.channels = {
@@ -52,6 +53,7 @@ Signal.prototype.status = function(info) {
             signal.cellID = info.cellID;
             signal.lac = info.lac;
             signal.neighbors = info.neighbors;
+            signal.imsi = info.imsi;
         }
     }
 };

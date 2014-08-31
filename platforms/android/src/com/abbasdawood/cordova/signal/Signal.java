@@ -12,15 +12,14 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.telephony.NeighboringCellInfo;
-import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.telephony.gsm.GsmCellLocation;
+import android.util.Log;
 
 public class Signal extends CordovaPlugin {
 
 	TelephonyManager Tel;
 	GsmCellLocation cellLocation;
-	MyPhoneStateListener MyListener;
 	public static String imei;
 	public static String operator;
 	private static List<NeighboringCellInfo> NeighboringList;
@@ -57,7 +56,7 @@ public class Signal extends CordovaPlugin {
      * @param callbackContext   The callback id used when calling back into JavaScript.
      * @return                  True if the action was valid, false if not.
      */
-    public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
+	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         if (action.equals("getSignalInfo")) {
             JSONObject r = new JSONObject();
             r.put("imei", this.getMobileIdentifier());
@@ -65,15 +64,17 @@ public class Signal extends CordovaPlugin {
             r.put("cellID", this.getCellID());
             r.put("lac", this.getLac());
             r.put("neighbors", this.getNeighbours());
+            r.put("imsi", this.Tel.getSubscriberId());
             callbackContext.success(r);
+            Log.d("Data sent:",r.toString());
         }
         else {
             return false;
         }
         return true;
     }
-	
-    /*All the local methods to give results back to cordova app
+
+	/*All the local methods to give results back to cordova app
      * 1. getMobileIdentifier()
      * 2. getOperator()
      * 3. getCellID()
@@ -132,10 +133,5 @@ public class Signal extends CordovaPlugin {
 
 	public void setNeighboringList(List<NeighboringCellInfo> neighboringList) {
 		NeighboringList = neighboringList;
-	}
-
-
-	private class MyPhoneStateListener extends PhoneStateListener {
-
 	}
 }

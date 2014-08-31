@@ -1,4 +1,5 @@
 /Users/abbass/Projects/phoneagentbg/platforms/android/ant-build/classes.dex : \
+/Users/abbass/Projects/phoneagentbg/platforms/android/ant-build/classes/com/abbasdawood/cordova/signal/Signal$1.class \
 /Users/abbass/Projects/phoneagentbg/platforms/android/ant-build/classes/com/abbasdawood/cordova/signal/Signal$MyPhoneStateListener.class \
 /Users/abbass/Projects/phoneagentbg/platforms/android/ant-build/classes/com/abbasdawood/cordova/signal/Signal.class \
 /Users/abbass/Projects/phoneagentbg/platforms/android/ant-build/classes/com/listener/bgservice/BackgroundListener.class \

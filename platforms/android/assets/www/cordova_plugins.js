@@ -12,20 +12,6 @@ module.exports = [
         ]
     },
     {
-        "file": "plugins/org.apache.cordova.device-motion/www/Acceleration.js",
-        "id": "org.apache.cordova.device-motion.Acceleration",
-        "clobbers": [
-            "Acceleration"
-        ]
-    },
-    {
-        "file": "plugins/org.apache.cordova.device-motion/www/accelerometer.js",
-        "id": "org.apache.cordova.device-motion.accelerometer",
-        "clobbers": [
-            "navigator.accelerometer"
-        ]
-    },
-    {
         "file": "plugins/org.apache.cordova.device/www/device.js",
         "id": "org.apache.cordova.device.device",
         "clobbers": [
@@ -88,7 +74,6 @@ module.exports.metadata =
 {
     "com.red_folder.phonegap.plugin.backgroundservice": "2.0.0",
     "com.abbasdawood.cordova.signal": "0.0.1",
-    "org.apache.cordova.device-motion": "0.2.9",
     "org.apache.cordova.device": "0.2.11",
     "org.apache.cordova.battery-status": "0.2.10",
     "org.apache.cordova.network-information": "0.2.11",

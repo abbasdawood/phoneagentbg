@@ -17,10 +17,6 @@
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"Accelerometer\"><param name=\"android-package\" value=\"org.apache.cordova.devicemotion.AccelListener\" /></feature>",
-                            "count": 1
-                        },
-                        {
                             "xml": "<feature name=\"Device\"><param name=\"android-package\" value=\"org.apache.cordova.device.Device\" /></feature>",
                             "count": 1
                         },
@@ -96,9 +92,6 @@
             "PACKAGE_NAME": "com.listener.phoneagentbg"
         },
         "com.abbasdawood.cordova.signal": {
-            "PACKAGE_NAME": "com.listener.phoneagentbg"
-        },
-        "org.apache.cordova.device-motion": {
             "PACKAGE_NAME": "com.listener.phoneagentbg"
         },
         "org.apache.cordova.device": {
