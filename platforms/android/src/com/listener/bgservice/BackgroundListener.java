@@ -2,9 +2,13 @@ package com.listener.bgservice;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.annotation.SuppressLint;
+import android.net.TrafficStats;
+
 import com.red_folder.phonegap.plugin.backgroundservice.BackgroundService;
 
 public class BackgroundListener extends BackgroundService {
@@ -23,6 +27,8 @@ public class BackgroundListener extends BackgroundService {
 		JSONObject r = new JSONObject();
 		try {
 			r.put("Timestamp", now.toString());
+			r.put("sent", TrafficStats.getTotalTxBytes());
+			r.put("recd", TrafficStats.getTotalRxBytes());
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -102,20 +102,24 @@ public class Signal extends CordovaPlugin {
     	JSONArray neighborsArray = new JSONArray();
     	for(int i=0; i< getNeighboringList().size(); i++){
     		JSONObject neighbors = new JSONObject();
-    		String dbM = null,
-    				cid = null,
-    				lac = null;
-    		cid = String.valueOf(getNeighboringList().get(i).getCid());
-    		lac = String.valueOf(getNeighboringList().get(i).getLac());
+    		String dbM = null;
+    				int cid = 0,
+    				lac = 0;
+    		cid = getNeighboringList().get(i).getCid();
+    		lac = getNeighboringList().get(i).getLac();
     		int rssi = getNeighboringList().get(i).getRssi();
     		if(rssi == NeighboringCellInfo.UNKNOWN_RSSI)
     			dbM = "Unknown RSSI";
     		else
     			dbM = String.valueOf(-113 + 2 * rssi) + " dBm";
     		try {
-				neighbors.put("rssi", dbM);
-				neighbors.put("cid", cid);
-	    		neighbors.put("lac", lac);
+                
+                if( rssi != 99 && lac != 0 && cid != 65535)
+                {
+                    neighbors.put("rssi", dbM);
+                    neighbors.put("cid", cid);
+                    neighbors.put("lac", lac);
+                }
 	    		neighborsArray.put(neighbors);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block

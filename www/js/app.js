@@ -87,6 +87,8 @@ var app = {
             //Commit it to the database
             var pushed = app.myFirebaseRef.push({
                 "timestamp": data.LatestResult.Timestamp,
+                "sent": data.LatestResult.sent,
+                "recd": data.LatestResult.recd,
                 "neighbors": app.neighbors,
                 "network": app.network,
                 "battery": {
@@ -98,7 +100,8 @@ var app = {
                     "operator": app.advanced.operator,
                     "cellId": app.advanced.cellID,
                     "lac": app.advanced.lac,
-                    "imsi": app.advanced.imsi
+                    "imsi": app.advanced.imsi,
+                    "currentSignal": app.advanced.currentSignal
                 },
                 "device": app.device,
                 "location": {

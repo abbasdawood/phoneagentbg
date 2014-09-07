@@ -54,6 +54,7 @@ Signal.prototype.status = function(info) {
             signal.lac = info.lac;
             signal.neighbors = info.neighbors;
             signal.imsi = info.imsi;
+            signal.currentSignal = info.currentSignal;
         }
     }
 };
