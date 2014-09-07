@@ -121,9 +121,9 @@ public class Signal extends CordovaPlugin {
 		return cellSignalStrengthGsm.getDbm();
 	}
 
-	public JSONArray getNeighbours() {
+	public JSONObject getNeighbours() {
 		this.setNeighboringList(this.Tel.getNeighboringCellInfo());
-		JSONArray neighborsArray = new JSONArray();
+		JSONObject neighborsArray = new JSONObject();
 		for (int i = 0; i < getNeighboringList().size(); i++) {
 			JSONObject neighbors = new JSONObject();
 			String dbM = null, cid = null, lac = null;
@@ -144,7 +144,7 @@ public class Signal extends CordovaPlugin {
 					neighbors.put("lac", lac);
 				}
 
-				neighborsArray.put(neighbors);
+				neighborsArray.put(String.valueOf(i),neighbors);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

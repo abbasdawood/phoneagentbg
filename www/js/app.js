@@ -5,9 +5,7 @@ var app = {
     location: {},
     device: {},
     neighbors: {},
-    advanced: {},
     battery: {},
-    network: null,
 
     // Application Constructor
     initialize: function() {
@@ -26,9 +24,7 @@ var app = {
         var factory = cordova.require('com.red_folder.phonegap.plugin.backgroundservice.BackgroundService');
         app.backgroundService = factory.create(serviceName);
         console.log('calling senddata');
-        window.addEventListener('watchingnetwork', app.getNetworkInfo, false);
         window.addEventListener('batterystatus', app.getBatteryInfo, false);
-        app.checkConnection();
         app.getDeviceName();
         app.getLocationInfo();
 
@@ -87,21 +83,21 @@ var app = {
             //Commit it to the database
             var pushed = app.myFirebaseRef.push({
                 "timestamp": data.LatestResult.Timestamp,
-                "sent": data.LatestResult.sent,
-                "recd": data.LatestResult.recd,
-                "neighbors": app.neighbors,
-                "network": app.network,
+                "data": data.LatestResult.data,
+                "neighbors": data.LatestResult.neighbors,
+                "network": data.LatestResult.networkType,
+                "activeNwk": data.LatestResult.activeNetwork,
                 "battery": {
                     "level": app.battery.level,
                     "isPlugged": app.battery.isPlugged
                 },
                 "networkdata": {
-                    "imei": app.advanced.imei,
-                    "operator": app.advanced.operator,
-                    "cellId": app.advanced.cellID,
-                    "lac": app.advanced.lac,
-                    "imsi": app.advanced.imsi,
-                    "currentSignal": app.advanced.currentSignal
+                    "imei": data.LatestResult.imei,
+                    "operator": data.LatestResult.operator,
+                    "cellId": data.LatestResult.cellID,
+                    "lac": data.LatestResult.lac,
+                    "imsi": data.LatestResult.imsi,
+                    "currentSignal": data.LatestResult.currentSignal
                 },
                 "device": app.device,
                 "location": {
@@ -142,7 +138,7 @@ var app = {
     /*Geo location functions*/
     /* Geolocation function */
     getLocationInfo: function() {
-        navigator.geolocation.getCurrentPosition(app.geolocationSuccess, app.geolocationError, {
+        var watch = navigator.geolocation.watchPosition(app.geolocationSuccess, app.geolocationError, {
             timeout: 30000,
             maximumAge: 0,
             enableHighAccuracy: false
@@ -155,14 +151,7 @@ var app = {
     },
 
     geolocationError: function(error) {
-        alert('Geolocation error code:' + error.code + ' reason:' + error.message);
-    },
-
-    /*Advanced Parameters*/
-    getNetworkInfo: function(info) {
-        app.advanced = info;
-        app.neighbors = info.neighbors;
-        console.log(info.toString());
+        console.log('Geolocation error' + error.toString());
     },
 
     /*Battery Info*/
@@ -173,22 +162,5 @@ var app = {
     /*Get device info*/
     getDeviceName: function() {
         app.device = device;
-    },
-
-    /*Check connection info*/
-    checkConnection: function() {
-        var networkState = navigator.connection.type;
-
-        var states = {};
-        states[Connection.UNKNOWN] = 'Unknown ';
-        states[Connection.ETHERNET] = 'Ethernet ';
-        states[Connection.WIFI] = 'WiFi ';
-        states[Connection.CELL_2G] = 'Cellular - 2G ';
-        states[Connection.CELL_3G] = 'Cellular - 3G ';
-        states[Connection.CELL_4G] = 'Cellular - 4G ';
-        states[Connection.CELL] = 'Cellular ';
-        states[Connection.NONE] = 'Not Connected ';
-
-        app.network = states[networkState];
     }
 };
