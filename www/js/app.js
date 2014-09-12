@@ -2,7 +2,6 @@ var app = {
 
     backgroundService: null,
     myFirebaseRef: null,
-    location: {},
     device: {},
     neighbors: {},
     battery: {},
@@ -26,7 +25,6 @@ var app = {
         console.log('calling senddata');
         window.addEventListener('batterystatus', app.getBatteryInfo, false);
         app.getDeviceName();
-        app.getLocationInfo();
 
         window.setTimeout(app.sendData(), 5000);
 
@@ -100,15 +98,7 @@ var app = {
                     "currentSignal": data.LatestResult.currentSignal
                 },
                 "device": app.device,
-                "location": {
-                    "latitude": app.location.latitude,
-                    "longitude": app.location.longitude,
-                    "altitude": app.location.altitude,
-                    "accuracy": app.location.accuracy,
-                    "altitude-accuracy": app.location.altitudeAccuracy,
-                    "heading": app.location.heading.toString(),
-                    "speed": app.location.speed
-                }
+                "location": data.LatestResult.location
             });
 
             console.log('Firebase returns:' + pushed.toString());
@@ -133,25 +123,6 @@ var app = {
     //Error handling
     displayError: function(error) {
         console.log("Error:" + JSON.stringify(error));
-    },
-
-    /*Geo location functions*/
-    /* Geolocation function */
-    getLocationInfo: function() {
-        var watch = navigator.geolocation.watchPosition(app.geolocationSuccess, app.geolocationError, {
-            timeout: 30000,
-            maximumAge: 0,
-            enableHighAccuracy: false
-        });
-    },
-
-    geolocationSuccess: function(position) {
-        app.location = position.coords;
-        console.log('Geolocation success callback');
-    },
-
-    geolocationError: function(error) {
-        console.log('Geolocation error' + error.toString());
     },
 
     /*Battery Info*/

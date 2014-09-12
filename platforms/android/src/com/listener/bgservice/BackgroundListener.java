@@ -9,18 +9,25 @@ import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.TrafficStats;
+import android.os.Bundle;
 import android.telephony.CellInfoGsm;
 import android.telephony.CellSignalStrengthGsm;
 import android.telephony.NeighboringCellInfo;
 import android.telephony.TelephonyManager;
 import android.telephony.gsm.GsmCellLocation;
+import android.util.Log;
 
 import com.red_folder.phonegap.plugin.backgroundservice.BackgroundService;
 
-public class BackgroundListener extends BackgroundService {
+public class BackgroundListener extends BackgroundService implements
+		LocationListener {
 
 	TelephonyManager Tel;
 	GsmCellLocation cellLocation;
@@ -29,19 +36,48 @@ public class BackgroundListener extends BackgroundService {
 	private static List<NeighboringCellInfo> NeighboringList;
 	public static int cellID;
 	public static int lac;
+	public Location locationObject;
+	public JSONObject locationBundle;
 	ConnectivityManager manager;
+	LocationManager location;
+	String provider;
 
 	public static final String WIFI = "wifi";
 	public static final String MOBILE = "mobile";
 
 	@Override
 	protected JSONObject initialiseLatestResult() {
+		
+		this.locationBundle = new JSONObject();
 		// TODO Auto-generated method stub
 		this.Tel = (TelephonyManager) this
 				.getSystemService(Context.TELEPHONY_SERVICE);
 		this.cellLocation = (GsmCellLocation) Tel.getCellLocation();
 
-		this.manager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+		this.manager = (ConnectivityManager) this
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		this.location = (LocationManager) this
+				.getSystemService(Context.LOCATION_SERVICE);
+
+		Criteria criteria = new Criteria();
+		criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+		this.location.requestLocationUpdates(location.getBestProvider(criteria,true), 0, 0, this);
+		
+		this.locationObject = location.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+		if (locationObject != null) {
+			try {
+				this.locationBundle.put("lat", locationObject.getLatitude());
+				this.locationBundle.put("long", locationObject.getLongitude());
+				this.locationBundle.put("speed", locationObject.getBearing());
+				this.locationBundle.put("speed", locationObject.getSpeed());
+				this.locationBundle.put("bearing", locationObject.getBearing());
+				this.locationBundle.put("accuracy", locationObject.getAccuracy());
+				Log.d("Location Bundle:", locationBundle.toString());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
 		return null;
 	}
 
@@ -62,13 +98,12 @@ public class BackgroundListener extends BackgroundService {
 			r.put("currentSignal", this.getCurrentStrength());
 			r.put("networkType", this.networkType());
 			r.put("activeNetwork", this.getActiveConnectionInfo());
-
+			r.put("location", this.locationBundle);
 			r.put("neighbors", this.getNeighbours());
 
 			data.put("sent", TrafficStats.getTotalTxBytes());
 			data.put("recd", TrafficStats.getTotalRxBytes());
 			r.put("data", data);
-
 
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -96,8 +131,10 @@ public class BackgroundListener extends BackgroundService {
 
 	@SuppressLint("NewApi")
 	public int getCurrentStrength() {
-		CellInfoGsm cellInfoGsm =  (CellInfoGsm) this.Tel.getAllCellInfo().get(0);
-		CellSignalStrengthGsm cellSignalStrengthGsm = cellInfoGsm.getCellSignalStrength();
+		CellInfoGsm cellInfoGsm = (CellInfoGsm) this.Tel.getAllCellInfo()
+				.get(0);
+		CellSignalStrengthGsm cellSignalStrengthGsm = cellInfoGsm
+				.getCellSignalStrength();
 		return cellSignalStrengthGsm.getDbm();
 	}
 
@@ -118,7 +155,8 @@ public class BackgroundListener extends BackgroundService {
 
 				if (getNeighboringList().get(i).getCid() != -1
 						&& getNeighboringList().get(i).getCid() != 65535
-						&& rssi != 99 && getNeighboringList().get(i).getLac() != 0) {
+						&& rssi != 99
+						&& getNeighboringList().get(i).getLac() != 0) {
 					neighbors.put("rssi", dbM);
 					neighbors.put("cid", cid);
 					neighbors.put("lac", lac);
@@ -141,36 +179,86 @@ public class BackgroundListener extends BackgroundService {
 		NeighboringList = neighboringList;
 	}
 
-	public String networkType(){
+	public String networkType() {
 		int type = this.Tel.getNetworkType();
 		switch (type) {
-		case TelephonyManager.NETWORK_TYPE_1xRTT: return "1xRTT";
-		case TelephonyManager.NETWORK_TYPE_CDMA: return "CDMA";
-		case TelephonyManager.NETWORK_TYPE_EDGE: return "EDGE";
-		case TelephonyManager.NETWORK_TYPE_EHRPD: return "eHRPD";
-		case TelephonyManager.NETWORK_TYPE_EVDO_0: return "EVDO rev. 0";
-		case TelephonyManager.NETWORK_TYPE_EVDO_A: return "EVDO rev. A";
-		case TelephonyManager.NETWORK_TYPE_EVDO_B: return "EVDO rev. B";
-		case TelephonyManager.NETWORK_TYPE_GPRS: return "GPRS";
-		case TelephonyManager.NETWORK_TYPE_HSDPA: return "HSDPA";
-		case TelephonyManager.NETWORK_TYPE_HSPA: return "HSPA";
-		case TelephonyManager.NETWORK_TYPE_HSPAP: return "HSPA+";
-		case TelephonyManager.NETWORK_TYPE_HSUPA: return "HSUPA";
-		case TelephonyManager.NETWORK_TYPE_IDEN: return "iDen";
-		case TelephonyManager.NETWORK_TYPE_LTE: return "LTE";
-		case TelephonyManager.NETWORK_TYPE_UMTS: return "UMTS";
-		case TelephonyManager.NETWORK_TYPE_UNKNOWN: return "Unknown";
+		case TelephonyManager.NETWORK_TYPE_1xRTT:
+			return "1xRTT";
+		case TelephonyManager.NETWORK_TYPE_CDMA:
+			return "CDMA";
+		case TelephonyManager.NETWORK_TYPE_EDGE:
+			return "EDGE";
+		case TelephonyManager.NETWORK_TYPE_EHRPD:
+			return "eHRPD";
+		case TelephonyManager.NETWORK_TYPE_EVDO_0:
+			return "EVDO rev. 0";
+		case TelephonyManager.NETWORK_TYPE_EVDO_A:
+			return "EVDO rev. A";
+		case TelephonyManager.NETWORK_TYPE_EVDO_B:
+			return "EVDO rev. B";
+		case TelephonyManager.NETWORK_TYPE_GPRS:
+			return "GPRS";
+		case TelephonyManager.NETWORK_TYPE_HSDPA:
+			return "HSDPA";
+		case TelephonyManager.NETWORK_TYPE_HSPA:
+			return "HSPA";
+		case TelephonyManager.NETWORK_TYPE_HSPAP:
+			return "HSPA+";
+		case TelephonyManager.NETWORK_TYPE_HSUPA:
+			return "HSUPA";
+		case TelephonyManager.NETWORK_TYPE_IDEN:
+			return "iDen";
+		case TelephonyManager.NETWORK_TYPE_LTE:
+			return "LTE";
+		case TelephonyManager.NETWORK_TYPE_UMTS:
+			return "UMTS";
+		case TelephonyManager.NETWORK_TYPE_UNKNOWN:
+			return "Unknown";
 		}
 		return null;
 	}
 
-	public String getActiveConnectionInfo(){
+	public String getActiveConnectionInfo() {
 		NetworkInfo info = this.manager.getActiveNetworkInfo();
 		String type = info.getTypeName();
-		if(type.toLowerCase().equals(WIFI))
-		{return WIFI;}
-		else
-		{return MOBILE;}
+		if (type.toLowerCase().equals(WIFI)) {
+			return WIFI;
+		} else {
+			return MOBILE;
+		}
+	}
+
+	@Override
+	public void onLocationChanged(Location location) {
+		if (location.getProvider() == LocationManager.GPS_PROVIDER
+				|| location.getProvider() == LocationManager.NETWORK_PROVIDER) {
+			try {
+				this.locationBundle.put("lat", location.getLatitude());
+				this.locationBundle.put("long", location.getLongitude());
+				this.locationBundle.put("speed", location.getBearing());
+				this.locationBundle.put("speed", location.getSpeed());
+				this.locationBundle.put("bearing", location.getBearing());
+				this.locationBundle.put("accuracy", location.getAccuracy());
+				Log.d("Location Bundle:", this.locationBundle.toString());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@Override
+	public void onStatusChanged(String provider, int status, Bundle extras) {
+		Log.d("Provider Status Changed:", provider + String.valueOf(status));
+	}
+
+	@Override
+	public void onProviderEnabled(String provider) {
+		Log.d("Enabled provider:", provider);
+	}
+
+	@Override
+	public void onProviderDisabled(String provider) {
+		Log.d("Disabled provider:", provider);
 	}
 
 }
